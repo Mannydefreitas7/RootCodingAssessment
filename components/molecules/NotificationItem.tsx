@@ -44,7 +44,7 @@ const notificationType = (Component: typeof Wrapper,  item: Notification, type: 
     const renderMentionNotification = () => {
         const workspace = (item as MentionNotification).workspace;
       
-        return (<Component item={item}>
+        return (<Component item={item} onPress={onPress}>
             <View className="flex-row items-center">
                 <Mention label={item.from} type='person' style={statusStyle} />
                 <Text className="text-neutral-200" style={statusStyle}> mentioned you in </Text>
@@ -61,7 +61,7 @@ const notificationType = (Component: typeof Wrapper,  item: Notification, type: 
     const renderFriendRequestNotification = () => {
 
         if ((item as FriendRequestNotification).status === 'pending') {
-            return (<Component item={item}>
+            return (<Component item={item} onPress={onPress}>
                 <View className="flex-row items-center mb-0.5">
                     <Mention label={item.from} type='person' style={statusStyle} />
                     <Text className="text-neutral-200" style={statusStyle}> sent you a friend request</Text>
@@ -76,7 +76,7 @@ const notificationType = (Component: typeof Wrapper,  item: Notification, type: 
             </Component>)
         }
 
-        return (<Component item={item}>
+        return (<Component item={item} onPress={onPress}>
             <View className="flex-row items-center">
                 <Mention label={item.from} type='person' style={statusStyle} />
                 {(item as FriendRequestNotification).status === 'accepted' ? <Text className="text-green-500 font-medium" style={statusStyle}> accepted</Text> : <Text className="text-red-500 font-medium" style={statusStyle}> declined</Text>}<Text className="text-neutral-100" style={statusStyle}> your friend request</Text>
@@ -89,7 +89,7 @@ const notificationType = (Component: typeof Wrapper,  item: Notification, type: 
 
     const renterInviteNotification = () => {
         const workspace = (item as MentionNotification).workspace;
-        return (<Component item={item}>
+        return (<Component item={item} onPress={onPress}>
             <View className="flex-row items-center">
                 <Mention label={item.from} type='person' style={statusStyle} />
                 <Text className="text-neutral-300" style={statusStyle}> invited you to </Text>

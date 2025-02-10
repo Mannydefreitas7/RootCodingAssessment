@@ -21,8 +21,14 @@ export const notificationSlice = createSlice({
     },
     toggleStatus: (state, action) => {
       const index = state.notifications.findIndex(n => n.id === action.payload.id)
-      if (index > -1) {
+      if (index > -1 && state.notifications[index].read) {
+        delete state.notifications[index].read
+        return
+      }
+
+      if (index > -1 && !state.notifications[index].read) {
         state.notifications[index].read = new Date()
+        return
       }
     }
   }
