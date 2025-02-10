@@ -38,6 +38,7 @@ function Time({ children }: { children: React.ReactNode }) {
     return <Text className="text-slate-500 text-sm font-semibold">{children}</Text>
 }
 
+// Using Higher Order Component to render different notification types
 const notificationType = (Component: typeof Wrapper,  item: Notification, type: NotificationType, onPress?: () => void) => {
     const result = useTimeAgo({ date: item.read ?? new Date(), locale: 'en-US', timeStyle: 'mini'});
     const statusStyle: StyleProp<TextStyle> = { fontWeight: item.read ? 'normal' : 'bold', fontStyle: item.read ? 'normal' : 'italic' }

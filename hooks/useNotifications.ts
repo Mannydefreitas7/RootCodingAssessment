@@ -3,11 +3,13 @@ import { socketService } from "@/services";
 import { createSelector, Store } from "@reduxjs/toolkit";
 import { isToday, isWithinInterval, isAfter, addWeeks, isThisWeek, isYesterday } from "date-fns"
 import { groupBy } from "lodash";
-import uuid from 'react-native-uuid';
 import { useAppSelector } from "@/store";
 
 const today = new Date();
   
+ // This function return a string that represents the section of the notification
+ // based on the date of the notification
+ // categories: Today, Yesterday, This week, Last week, Older
   const sectionDateText = (date: Date) => {
     if (isToday(date)) {
       return 'Today';
@@ -22,6 +24,7 @@ const today = new Date();
     }
   }
 
+  
 export const useNotifications = (store: Store) => {
 
     const startListening = () => {
@@ -38,7 +41,6 @@ export const useNotifications = (store: Store) => {
             .map((item) => ({
                 ...item, 
                 date: new Date(item.date),
-                id: uuid.v4(),
                 section: sectionDateText(item.date)
             }))
             .sort((a, b) => isAfter(b.date, a.date) ? 1 : -1)
