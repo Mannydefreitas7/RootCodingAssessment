@@ -70,6 +70,8 @@ Your UI must allow users to mark notifications as read.
 Provide either a GitHub repository or email the code as a zip file. Include instructions on how to run the
 application, any dependencies needed, and any additional notes you want to share with the reviewer.
 
+**Github repository**: [https://github.com/Mannydefreitas7/RootCodingAssessment](https://github.com/Mannydefreitas7/RootCodingAssessment)
+
 ## Evaluation Criteria
 The candidate's solution will be evaluated based on the following criteria:
 
