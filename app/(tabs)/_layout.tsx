@@ -1,43 +1,80 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
-
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import React, { useEffect } from 'react';
+import { IconSymbol, TabBarBackground, TabBarHeader } from '@/components';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNotifications } from "@/hooks"
+import { notificationService } from '@/services';
+import { store } from '@/store';
+import { addMinutes } from 'date-fns';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+   const { top: paddingTop } = useSafeAreaInsets()
+   const { count, startListening, stopListening } = useNotifications(store)
 
-  return (
+   useEffect(() => {
+      startListening()
+      return () => stopListening()
+   }, [])
+
+   useEffect(() => {
+      const now = new Date();
+      notificationService.scheduleNotification(now)
+      // Schedule a random notification 1 min from now
+      notificationService.scheduleNotification(addMinutes(now, 1))
+      // Schedule a random notification 3 min from now
+      notificationService.scheduleNotification(addMinutes(now, 3))
+      // Schedule a random notification 5 min from now
+      notificationService.scheduleNotification(addMinutes(now, 5))
+   }, [])
+
+
+  return ( 
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
+        tabBarActiveTintColor: 'white',
+        headerShown: true,
+        header: (props) => <TabBarHeader {...props} paddingTop={paddingTop} />,
         tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
+        tabBarStyle: {
             position: 'absolute',
-          },
-          default: {},
-        }),
+            borderTopWidth: 0, 
+        },
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ color, focused }) => <IconSymbol size={28} name={focused ? "house.fill" : "house"} color={color} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="friends"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Friends',
+          tabBarIcon: ({ color, focused }) => <IconSymbol size={28} name={focused ? "person.fill" : "person"} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="messages"
+        options={{
+          title: 'Messages',
+          tabBarIcon: ({ color, focused }) => <IconSymbol size={28} name={focused ? "message.fill" : "message"} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="notifications"
+        
+        options={{
+          title: 'Notifications',
+          tabBarBadge: count > 0 ? count : undefined,
+          tabBarIcon: ({ color, focused }) => <IconSymbol size={28} name={focused ? "bell.fill" : "bell"} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, focused }) => <IconSymbol size={28} name={focused ? "person.fill" : "person"} color={color} />,
         }}
       />
     </Tabs>
