@@ -10,7 +10,14 @@ See [https://docs.expo.dev/develop/development-builds/create-a-build/](https://d
 ```
 yarn
 ```
-### 2. Build iOS and Android
+
+### 2. Run server
+
+```
+yarn server
+```
+
+### 3. Build iOS and Android
 
 #### iOS
 
@@ -22,12 +29,6 @@ yarn run:ios
 
 ```
 yarn run:android
-```
-
-### 3. Run server
-
-```
-yarn server
 ```
 
 ### 4. Run App
